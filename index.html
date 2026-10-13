@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mosaic Film Fund</title>
+<meta name="description" content="Mosaic is a private film fund based in Israel. We help exceptional features close their final financing gap so that stories rooted in Jewish, Israeli, and Middle Eastern experience reach the screen.">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="%23191310"/><text x="14" y="44" font-family="Georgia,serif" font-size="34" fill="%23F6EFE1">M</text><circle cx="47" cy="41" r="5" fill="%23C26F4E"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Lato:wght@400;700&family=Frank+Ruhl+Libre:wght@400;500;700&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#191310;
+    --cream:#F6EFE1;
+    --cream-dim:rgba(246,239,225,.6);
+    --accent:#C26F4E;
+    --rule:rgba(246,239,225,.2);
+    --serif:'Newsreader',Georgia,serif;
+    --sans:'Lato',Helvetica,Arial,sans-serif;
+  }
+  html[data-lang="he"]{
+    --serif:'Frank Ruhl Libre','Newsreader',Georgia,serif;
+    --sans:'Assistant','Lato',Helvetica,Arial,sans-serif;
+  }
+  html[data-lang="en"] [lang="he"]{display:none}
+  html[data-lang="he"] [lang="en"]{display:none}
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--dark);
+    color:var(--cream);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;
+    min-height:100dvh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  .dot{color:var(--accent)}
+
+  /* ---- the light: one point, center of the room ---- */
+  #light{
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:0;
+    will-change:opacity;
+  }
+  #glow{
+    position:absolute;
+    top:44%;left:50%;
+    width:min(1250px,170vw);height:min(950px,130vh);
+    transform:translate(-50%,-50%);
+    will-change:transform;
+    background:
+      radial-gradient(ellipse 20% 20% at 50% 50%,
+        rgba(255,230,196,.26), transparent 70%),
+      radial-gradient(ellipse 50% 50% at 50% 50%,
+        rgba(255,216,170,.28),
+        rgba(214,142,96,.13) 42%,
+        rgba(194,111,78,.055) 60%,
+        transparent 72%);
+    filter:blur(8px);
+  }
+  /* dust hanging in the light */
+  .mote{
+    position:absolute;
+    width:3px;height:3px;border-radius:50%;
+    background:rgba(255,224,186,.7);
+    filter:blur(.5px);
+    animation:drift 12s ease-in-out infinite;
+    opacity:0;
+  }
+  .mote:nth-child(1){left:46%;top:40%;animation-duration:11s;animation-delay:0s}
+  .mote:nth-child(2){left:53%;top:36%;animation-duration:14s;animation-delay:2s}
+  .mote:nth-child(3){left:49%;top:52%;animation-duration:10s;animation-delay:4s;width:2px;height:2px}
+  .mote:nth-child(4){left:56%;top:46%;animation-duration:16s;animation-delay:1s;width:2px;height:2px}
+  .mote:nth-child(5){left:42%;top:48%;animation-duration:13s;animation-delay:6s}
+  .mote:nth-child(6){left:51%;top:58%;animation-duration:12s;animation-delay:3s}
+  .mote:nth-child(7){left:44%;top:33%;animation-duration:15s;animation-delay:5s;width:2px;height:2px}
+  .mote:nth-child(8){left:58%;top:55%;animation-duration:11s;animation-delay:7s;width:2px;height:2px}
+  @keyframes drift{
+    0%{transform:translate(0,0);opacity:0}
+    15%{opacity:.55}
+    50%{transform:translate(14px,-30px);opacity:.3}
+    85%{opacity:.5}
+    100%{transform:translate(-8px,-58px);opacity:0}
+  }
+  /* film grain */
+  #grain{
+    position:fixed;
+    top:-160px;left:-160px;right:-160px;bottom:-160px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity:.05;
+    pointer-events:none;
+    z-index:0;
+    will-change:transform;
+  }
+
+  /* ---- content ---- */
+  header,main,footer{position:relative;width:100%;z-index:1}
+
+  header{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:clamp(20px,3.5vh,34px) clamp(24px,5vw,56px) 0;
+  }
+  .wordmark{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(24px,2.6vh+8px,30px);
+    color:var(--cream);text-decoration:none;
+  }
+  .lang-toggle{
+    font-family:var(--sans);font-size:11px;font-weight:700;
+    letter-spacing:.18em;text-transform:uppercase;
+    color:var(--cream-dim);
+    background:none;border:none;cursor:pointer;padding:6px 0;
+  }
+  .lang-toggle:hover{color:var(--accent)}
+
+  main{
+    flex:1;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;
+    padding:clamp(16px,3vh,40px) clamp(24px,6vw,64px);
+  }
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:11px;font-weight:700;
+    letter-spacing:.26em;text-transform:uppercase;
+    color:var(--accent);
+  }
+  h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(34px,5.2vh+1.6vw,64px);
+    line-height:1.12;letter-spacing:-.01em;
+    max-width:14em;
+    margin-top:clamp(18px,3vh,30px);
+    text-shadow:0 0 50px rgba(255,214,170,.25);
+  }
+  h1 .dot{text-shadow:0 0 20px rgba(194,111,78,.8)}
+  main p{
+    color:var(--cream-dim);
+    font-size:clamp(15.5px,1.6vh+6px,18.5px);
+    line-height:1.7;
+    max-width:33em;
+    margin-top:clamp(18px,3vh,30px);
+  }
+
+  footer{
+    border-top:1px solid var(--rule);
+    margin:0 clamp(24px,5vw,56px);
+    padding:clamp(14px,2.4vh,22px) 0 clamp(18px,3vh,28px);
+    font-family:var(--sans);
+    font-size:10.5px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+    color:var(--cream-dim);
+    text-align:center;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .mote{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div id="light" aria-hidden="true">
+  <div id="glow">
+    <span class="mote"></span><span class="mote"></span><span class="mote"></span><span class="mote"></span><span class="mote"></span><span class="mote"></span><span class="mote"></span><span class="mote"></span>
+  </div>
+</div>
+<div id="grain" aria-hidden="true"></div>
+
+<header>
+  <a class="wordmark" href="#">Mosaic<span class="dot">.</span></a>
+  <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">עברית</button>
+</header>
+
+<main>
+  <div class="eyebrow">
+    <span lang="en">A private film fund · Israel</span>
+    <span lang="he">קרן קולנוע פרטית · ישראל</span>
+  </div>
+  <h1>
+    <span lang="en">Mosaic Film Fund<span class="dot">.</span></span>
+    <span lang="he">קרן הקולנוע מוזאיק<span class="dot">.</span></span>
+  </h1>
+  <p lang="en">
+    We help exceptional features close their final financing gap, so that stories
+    rooted in Jewish, Israeli, and Middle Eastern experience reach the screen.
+  </p>
+  <p lang="he">
+    אנחנו עוזרים לסרטים עלילתיים יוצאי דופן לסגור את פער המימון האחרון,
+    כדי שסיפורים הנטועים בחוויה היהודית, הישראלית והמזרח תיכונית יגיעו אל המסך.
+  </p>
+</main>
+
+<footer>
+  <span lang="en">© 2026 Mosaic Film Fund · A registered Israeli nonprofit</span>
+  <span lang="he">© 2026 קרן הקולנוע מוזאיק · עמותה רשומה</span>
+</footer>
+
+<script>
+  (function(){
+    /* language toggle */
+    var toggle=document.getElementById('langToggle');
+    function setLang(l){
+      var he=(l==='he');
+      var root=document.documentElement;
+      root.setAttribute('lang',he?'he':'en');
+      root.setAttribute('dir',he?'rtl':'ltr');
+      root.setAttribute('data-lang',he?'he':'en');
+      toggle.textContent=he?'English':'עברית';
+      document.title=he?'קרן הקולנוע מוזאיק':'Mosaic Film Fund';
+      try{localStorage.setItem('mosaic-lang',he?'he':'en')}catch(e){}
+    }
+    var saved='en';
+    try{saved=localStorage.getItem('mosaic-lang')||'en'}catch(e){}
+    setLang(saved);
+    toggle.addEventListener('click',function(){
+      setLang(document.documentElement.getAttribute('data-lang')==='he'?'en':'he');
+    });
+
+    /* ambient flicker: layered smooth noise, never repeats.
+       LIVELY scales the whole effect; override by opening
+       the page with ?lively=2 (or any number) in the URL. */
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      var LIVELY=1.2;
+      try{
+        var q=parseFloat(new URLSearchParams(location.search).get('lively'));
+        if(q>0)LIVELY=q;
+      }catch(e){}
+      var SPEED=Math.sqrt(LIVELY);
+
+      var light=document.getElementById('light');
+      var glow=document.getElementById('glow');
+      var grain=document.getElementById('grain');
+
+      /* smooth 1D noise: eased glide between random targets */
+      function noise(interval){
+        var a=Math.random(), b=Math.random(), t0=performance.now();
+        return function(now){
+          var u=(now-t0)/interval;
+          while(u>=1){a=b;b=Math.random();t0+=interval;u-=1;}
+          if(u<0)u=0;
+          var s=u*u*(3-2*u);
+          return a+(b-a)*s-0.5;   /* -0.5 .. 0.5 */
+        };
+      }
+      var lumSlow=noise(5600/SPEED), lumMid=noise(950/SPEED), lumFast=noise(190/SPEED);
+      var driftX1=noise(3000/SPEED), driftX2=noise(1200/SPEED), driftY=noise(2600/SPEED);
+
+      /* sputter: a softly enveloped dip at irregular intervals */
+      var dipStart=-1, dipLen=0, dipDepth=0;
+      var nextDip=performance.now()+(2500+Math.random()*4000)/LIVELY;
+      var grainNext=0;
+
+      function frame(now){
+        if(now>nextDip){
+          dipStart=now;
+          dipLen=240+Math.random()*280;
+          dipDepth=Math.min(0.45,(0.15+Math.random()*0.15)*LIVELY);
+          nextDip=now+(3000+Math.random()*4500)/LIVELY;
+        }
+        var dip=0;
+        if(dipStart>0){
+          var ph=(now-dipStart)/dipLen;
+          if(ph<1){dip=Math.sin(Math.PI*ph)*dipDepth*(0.75+0.25*Math.sin(ph*13));}
+          else{dipStart=-1;}
+        }
+
+        var swing=Math.min(0.68,0.49*LIVELY)/0.49;
+        var lum=0.84+(lumSlow(now)*0.26+lumMid(now)*0.14+lumFast(now)*0.09)*swing-dip;
+        if(lum<0.38)lum=0.38;
+        if(lum>1)lum=1;
+        light.style.opacity=lum.toFixed(3);
+
+        /* the lamp hangs in the air: it drifts, never still */
+        var gx=(driftX1(now)*10+driftX2(now)*4)*LIVELY;
+        var gy=driftY(now)*8*LIVELY;
+        glow.style.transform='translate(calc(-50% + '+gx.toFixed(2)+'px), calc(-50% + '+gy.toFixed(2)+'px))';
+
+        /* grain re-seats several times a second */
+        if(now>grainNext){
+          grain.style.transform='translate('+((Math.random()*140)|0)+'px,'+((Math.random()*140)|0)+'px)';
+          grainNext=now+Math.max(45,(80+Math.random()*80)/LIVELY);
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+  })();
+</script>
+
+</body>
+</html>
